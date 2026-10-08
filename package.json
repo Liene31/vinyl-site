@@ -1,0 +1,15 @@
+{
+  "name": "vinyl-site",
+  "version": "1.0.0",
+  "description": "Online classic vinyl store",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --watch-preserve-output server.js"
+  },
+  "author": "Liene",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
