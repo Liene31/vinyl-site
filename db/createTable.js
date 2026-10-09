@@ -4,7 +4,7 @@ import path from "node:path";
 
 export async function createTable() {
   const db = await open({
-    filename: path.join("database.db"),
+    filename: path.join("db", "database.db"),
     driver: sqlite3.Database,
   });
 
@@ -15,6 +15,7 @@ export async function createTable() {
         artist TEXT NOT NULL,
         price REAL NOT NULL,
         image TEXT NOT NULL,
+        year INTEGER,
         genre TEXT,
         stock INTEGER
     )
@@ -23,3 +24,5 @@ export async function createTable() {
   await db.close();
   console.log("Table products created");
 }
+
+await createTable();
