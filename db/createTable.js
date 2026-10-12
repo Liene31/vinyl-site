@@ -18,11 +18,21 @@ export async function createTable() {
         year INTEGER,
         genre TEXT,
         stock INTEGER
+    );
+        CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        name TEXT,
+        email TEXT UNIQUE NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP      
     )
+
+
     `);
 
   await db.close();
-  console.log("Table products created");
+  console.log("Table created");
 }
 
 await createTable();
