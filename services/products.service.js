@@ -8,21 +8,23 @@ export const productsService = {
   },
 
   getProducts: async (genre, search) => {
-    if (search) {
-      const searchParam = `%${search}%`;
+    let query = "SELECT * FROM products";
+    let params = [];
 
-      return await db.all(
-        "SELECT * FROM products WHERE genre LIKE ? OR title LIKE ? OR artist LIKE ?",
-        searchParam,
-        searchParam,
-        searchParam,
-      );
+    if (genre) {
+      query += " WHERE genre = ?";
+      params.push(genre);
+    } else if (search) {
+      query += `     
+      WHERE 
+        genre LIKE ?
+        OR title LIKE ?
+        OR artist LIKE ?
+        `;
+      const searchPattern = `%${search}%`;
+      params.push(searchPattern, searchPattern, searchPattern);
     }
 
-    if (!genre) {
-      return await db.all("SELECT * FROM products");
-    }
-
-    return await db.all("SELECT * FROM products WHERE genre = ?", genre);
+    return await db.all(query, params);
   },
 };
