@@ -1,3 +1,4 @@
+import isEmail from "validator/lib/isEmail.js";
 import { getDBConnection } from "../db/db.js";
 const db = await getDBConnection();
 
