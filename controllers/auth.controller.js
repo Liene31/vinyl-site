@@ -4,7 +4,7 @@ export const authController = {
   register: async (req, res) => {
     try {
       const result = await authService.registerUser(req.body);
-      console.log(result.error);
+
       if (result.error) {
         return res.status(result.status).json({ error: result.error });
       }

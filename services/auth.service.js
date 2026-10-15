@@ -47,11 +47,12 @@ export const authService = {
   },
 
   create: async (user) => {
+    const { name, email, username, password } = user;
     return await db.run(
       `
                 INSERT INTO users (name, email, username, password)
                 VALUES(?, ?, ?, ?)`,
-      [user.name, user.email, user.username, user.password],
+      [name, email, username, password],
     );
   },
 };
