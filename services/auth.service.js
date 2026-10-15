@@ -1,17 +1,27 @@
 import { getDBConnection } from "../db/db.js";
-const db = await getDBConnection();
 import { validateUserInput } from "../utility/validateUserInput.js";
+
+const db = await getDBConnection();
 
 export const authService = {
   registerUser: async (userData) => {
     const validatedUser = validateUserInput(userData);
+
+    if (validatedUser.error) {
+      return validatedUser;
+    }
+
     const { email, username } = validatedUser;
 
     if (await authService.emailAlreadyExists(email)) {
-      throw new Error("Email already exists");
-    } else {
-      console.log("email doesn't exist, good to go ");
+      return { error: "Email already exists", status: 409 };
     }
+
+    if (await authService.usernameAlreadyExists(username)) {
+      return { error: "Username already exists", status: 409 };
+    }
+
+    return await authService.create(validatedUser);
   },
 
   emailAlreadyExists: async (email) => {
@@ -22,6 +32,26 @@ export const authService = {
           WHERE email = ?
           `,
       [email],
+    );
+  },
+
+  usernameAlreadyExists: async (username) => {
+    return await db.get(
+      `
+          SELECT username
+          FROM users
+          WHERE username = ?
+          `,
+      [username],
+    );
+  },
+
+  create: async (user) => {
+    return await db.run(
+      `
+                INSERT INTO users (name, email, username, password)
+                VALUES(?, ?, ?, ?)`,
+      [user.name, user.email, user.username, user.password],
     );
   },
 };

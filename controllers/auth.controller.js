@@ -1,14 +1,18 @@
 import { authService } from "../services/auth.service.js";
 
 export const authController = {
-  register: (req, res) => {
-    // 1. validate user
-    // 2. check if user email and username exists
-    // 3. if doesn't exist, can create (add user to DB)
+  register: async (req, res) => {
     try {
-      authService.registerUser(req.body);
+      const result = await authService.registerUser(req.body);
+      console.log(result.error);
+      if (result.error) {
+        return res.status(result.status).json({ error: result.error });
+      }
+
+      return res.status(201).json({ message: "User registered" });
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      console.error(err);
+      return res.status(500).json({ error: "Internal server error" });
     }
   },
 };

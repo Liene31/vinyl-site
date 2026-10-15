@@ -5,7 +5,7 @@ export const validateUserInput = (userData) => {
   const regex = /^[a-zA-Z0-9_-]{1,20}$/;
 
   if (!name || !email || !username || !password) {
-    throw new Error("All fields are required.");
+    return { error: "All fields are required.", status: 400 };
   }
 
   name = name.trim();
@@ -13,11 +13,11 @@ export const validateUserInput = (userData) => {
   username = username.trim();
 
   if (!regex.test(username)) {
-    throw new Error("Username is not valid");
+    return { error: "Username is not valid.", status: 400 };
   }
 
   if (!validator.isEmail(email)) {
-    throw new Error("Email is not valid");
+    return { error: "Email is not valid.", status: 400 };
   }
 
   // it's a short of name: name, email: email etc
