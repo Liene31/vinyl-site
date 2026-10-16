@@ -1,5 +1,6 @@
 import { getDBConnection } from "../db/db.js";
 import { validateUserInput } from "../utility/validateUserInput.js";
+import bcrypt from "bcryptjs";
 
 const db = await getDBConnection();
 
@@ -48,11 +49,12 @@ export const authService = {
 
   create: async (user) => {
     const { name, email, username, password } = user;
+    const hashedPassword = await bcrypt.hash(password, 10);
     return await db.run(
       `
                 INSERT INTO users (name, email, username, password)
                 VALUES(?, ?, ?, ?)`,
-      [name, email, username, password],
+      [name, email, username, hashedPassword],
     );
   },
 };
