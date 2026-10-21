@@ -25,6 +25,38 @@ export const authService = {
     return await authService.create(validatedUser);
   },
 
+  login: async (userData) => {
+    let { username, password } = userData;
+    if (!username || !password) {
+      return { error: "All fields are required.", status: 400 };
+    }
+    username = username.trim();
+
+    const userPasswordInDb = await db.get(
+      `
+          SELECT password, id
+          FROM users
+          WHERE username = ?
+          `,
+      [username],
+    );
+
+    if (!userPasswordInDb) {
+      return { error: "Invalid credentials", status: 401 };
+    }
+
+    const passwordIsValid = await bcrypt.compare(
+      password,
+      userPasswordInDb.password,
+    );
+
+    if (!passwordIsValid) {
+      return { error: "Invalid credentials", status: 401 };
+    }
+
+    return userPasswordInDb.id;
+  },
+
   emailAlreadyExists: async (email) => {
     return await db.get(
       `

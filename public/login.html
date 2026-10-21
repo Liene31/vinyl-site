@@ -40,7 +40,14 @@
         <div class="form-inner">
           <h2>Welcome back!</h2>
           <label for="signin-username">Username</label>
-          <input type="text" id="signin-username" name="username" required />
+          <input
+            type="text"
+            id="signin-username"
+            name="username"
+            required
+            pattern="^[a-zA-Z0-9_\-]{1,20}$"
+            title="Username must be 1–20 characters and can only include letters, numbers, underscores (_), or hyphens (-)."
+          />
 
           <label for="signin-password">Password</label>
           <input
