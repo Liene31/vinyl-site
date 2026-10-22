@@ -3,6 +3,7 @@ import { productsRouter } from "./routes/products.router.js";
 import { authRouter } from "./routes/auth.router.js";
 import session from "express-session";
 import { meRouter } from "./routes/me.router.js";
+import { cartRouter } from "./routes/cart.router.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(
 app.use("/api/products", productsRouter);
 app.use("/api/auth/me", meRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/cart", cartRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listens on port ${PORT}`);
