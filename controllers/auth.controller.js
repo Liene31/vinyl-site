@@ -1,3 +1,4 @@
+import { logout } from "../public/js/logout.js";
 import { authService } from "../services/auth.service.js";
 
 export const authController = {
@@ -31,5 +32,14 @@ export const authController = {
       console.error(err);
       return res.status(500).json({ error: "Internal server error" });
     }
+  },
+
+  logout: (req, res) => {
+    req.session.destroy((error) => {
+      if (error) {
+        return res.status(500).json({ message: "Logout failed!" });
+      }
+      res.json({ message: "Logged out successfully!" });
+    });
   },
 };
