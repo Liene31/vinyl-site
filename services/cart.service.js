@@ -38,4 +38,15 @@ export const cartService = {
       [item, userId],
     );
   },
+
+  getCartCount: async (userId) => {
+    return await db.get(
+      `
+          SELECT SUM(quantity) AS totalItems
+          FROM cart_items
+          WHERE user_id = ?
+          `,
+      [userId],
+    );
+  },
 };
