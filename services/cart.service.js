@@ -53,13 +53,23 @@ export const cartService = {
   getAll: async (userId) => {
     return await db.all(
       `
-          SELECT p.*, ci.quantity
+          SELECT ci.id AS cartItemId, ci.quantity, p.title, p.artist, p.price
           FROM products p
           JOIN cart_items ci
           ON p.id = ci.product_id
           WHERE ci.user_id = ?
           `,
       [userId],
+    );
+  },
+
+  delete: async (itemId, userId) => {
+    return await db.run(
+      `
+      DELETE FROM cart_items 
+      WHERE id = ? AND user_id = ?;
+      `,
+      [itemId, userId],
     );
   },
 };

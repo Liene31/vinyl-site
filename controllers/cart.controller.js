@@ -36,4 +36,22 @@ export const cartController = {
       return res.status(500).json({ error: "Internal server error" });
     }
   },
+  deleteItem: async (req, res) => {
+    const itemId = req.params.itemId;
+    const userId = req.session.userId;
+
+    if (!itemId || isNaN(itemId)) {
+      return res.status(400).json({ message: "Item ID is not valid" });
+    }
+    try {
+      const result = await cartService.delete(itemId, userId);
+
+      if (result.changes === 0) {
+        return res.status(404).json({ message: "No matching item was found" });
+      }
+      res.sendStatus(204);
+    } catch (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
 };
