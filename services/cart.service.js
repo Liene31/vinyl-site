@@ -49,4 +49,17 @@ export const cartService = {
       [userId],
     );
   },
+
+  getAll: async (userId) => {
+    return await db.all(
+      `
+          SELECT p.*, ci.quantity
+          FROM products p
+          JOIN cart_items ci
+          ON p.id = ci.product_id
+          WHERE ci.user_id = ?
+          `,
+      [userId],
+    );
+  },
 };
